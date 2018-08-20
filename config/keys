@@ -1,0 +1,5 @@
+module.exports = {
+  mongoURI: 'mongodb://test:PersimmonStrike2@ds227322.mlab.com:27322/devconnectoror'
+}
+
+//mongodb://<dbuser>:<dbpassword>@ds227322.mlab.com:27322/devconnectoror
