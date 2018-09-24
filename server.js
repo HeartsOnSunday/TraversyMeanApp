@@ -18,7 +18,7 @@ mongoose
   )
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
-
+//route to the homepage and the message to send back
 app.get("/", (req, res) => res.send("Hello!"));
 
 // Use routes
