@@ -1,6 +1,7 @@
 module.exports = {
   mongoURI:
-    "mongodb://Test:PersimmonStrike2@ds227322.mlab.com:27322/devconnectoror"
+    "mongodb://Test:PersimmonStrike2@ds227322.mlab.com:27322/devconnectoror",
+  secretOrKey: "secret"
 };
 
 /* mongodb://<dbuser>:<dbpassword>@ds227322.mlab.com:27322/devconnectoror
