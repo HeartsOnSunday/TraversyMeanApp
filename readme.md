@@ -10,4 +10,4 @@ Json webtoken Module
 
 - creates web token
 
-Passport - valiation of JSON Web Token, extracts user information from Token.
+Passport - valiation of JSON Web Token, extracts user information from Token. Created Private Routes

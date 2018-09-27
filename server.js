@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const passport = require("passport");
 //routes
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
@@ -23,8 +24,12 @@ mongoose
   )
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
-//route to the homepage and the message to send back
-app.get("/", (req, res) => res.send("Hello!"));
+
+// Passport Middlewear
+app.use(passport.initialize());
+
+//Passport Config (called a strategy, specifically it is a JWT strategy).
+require("./config/passport")(passport);
 
 // Use routes
 app.use("/api/users", users);
