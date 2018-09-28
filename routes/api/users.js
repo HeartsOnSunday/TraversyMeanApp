@@ -8,6 +8,7 @@ const passport = require("passport");
 
 //Load Input Validation
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // Load User model
 const User = require("../../models/User");
@@ -64,6 +65,13 @@ router.post("/register", (req, res) => {
 // @desc Login user / Returns JWT Token (JSON Web Token)
 // @access Public
 router.post("/login", (req, res) => {
+  // use destructuring to take information from errors produced from function isEmpty
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  //check validaion
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   const email = req.body.email;
   const password = req.body.password;
 
@@ -71,7 +79,8 @@ router.post("/login", (req, res) => {
   User.findOne({ email }).then(user => {
     //check for user
     if (!user) {
-      return res.status(404).json({ email: "User email not found" });
+      errors.email = "User not found";
+      return res.status(404).json(errors);
     }
 
     //Check Password
@@ -95,7 +104,8 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ password: "Password is incorrect" });
+        errors.password = "password is incorrect";
+        return res.status(400).json(errors);
       }
     });
   });
@@ -117,4 +127,4 @@ router.get(
 );
 
 module.exports = router;
-//routes/api/users is implied by the route
+//routes/api/users is implied by the

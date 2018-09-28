@@ -9,11 +9,10 @@ module.exports = function validateRegisterInput(data) {
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
 
-  //password must be longer that two characters
   if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
     errors.name = "Name must be between 2 and 30 characters";
   }
-  //Nake check not be empty string (converted to string above)
+
   if (Validator.isEmpty(data.name)) {
     errors.name = "name field is required";
   }
