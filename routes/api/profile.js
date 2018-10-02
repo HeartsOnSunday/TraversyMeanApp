@@ -3,12 +3,15 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
+// Load Validation
+const validateProfileInput = require("../../validation/profile");
+
 // Load Profile Model
 const Profile = require("../../models/Profile");
 // Load User Profile
 const User = require("../../models/User");
 
-// @route GET api/posts/test --HEADERINFO
+// @route GET api/profile/test --HEADERINFO
 // @desc Tests post route --HEADERINFO
 // @access Public  --HEADERINFO
 router.get("/test", (req, res) => res.json({ msg: "Profile Works" }));
@@ -36,12 +39,19 @@ router.get(
 // @route Post api/profile --HEADERINFO
 // @desc Create or Edit User Profile --HEADERINFO
 // @access Private  --HEADERINFO
-router.get(
+router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    //check Validation
+    if (!isValid) {
+      //Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
     //Get Fields
-    const profileField = {};
+    const profileFields = {};
     profileFields.user = req.user.id;
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.company) profileFields.company = req.body.company;
@@ -81,7 +91,6 @@ router.get(
             errors.handle = "That Handle already exists";
             res.status(400).json(errors);
           }
-
           // Save Profile
           new Profile(profileFields).save().then(profile => res.json(profile));
         });
