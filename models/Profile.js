@@ -94,7 +94,7 @@ const ProfileSchema = new Schema({
       }
     }
   ],
-  socail: {
+  social: {
     youtube: {
       type: String
     },
@@ -104,10 +104,10 @@ const ProfileSchema = new Schema({
     facebook: {
       type: String
     },
-    LinkedIn: {
+    linkedin: {
       type: String
     },
-    Instagram: {
+    instagram: {
       type: String
     }
   },
