@@ -37,6 +37,63 @@ router.get(
   }
 );
 
+// @route   GET api/profile/all
+// @desc    Get all profiles
+// @access  Public
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  Profile.find()
+    .populate("user", ["name", "avatar"])
+    .then(profiles => {
+      if (!profiles) {
+        errors.noprofile = "There are no profiles";
+        return res.status(404).json(errors);
+      }
+      res.json(profiles);
+    })
+    .catch(err => res.status(404).json({ profile: "There are no profiles" }));
+});
+
+// Back End Route
+// @route Get api/profile/handle/:handle --HEADERINFO
+// @desc Search for profile by handle --HEADERINFO
+// @access Private  --HEADERINFO
+
+router.get("/handle/:handle", (req, res) => {
+  const errors = {};
+  Profile.findOne({ handle: req.params.handle })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => res.status(404).json(err));
+});
+
+// @route Post api/profile/user/:user --HEADERINFO
+// @desc Search for profile by user ID--HEADERINFO
+// @access Private  --HEADERINFO
+
+router.get("/user/:user_id", (req, res) => {
+  const errors = {};
+  Profile.findOne({ user: req.params.user_id })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err =>
+      res.status(400).json({ profile: "There is no profile for this user" })
+    );
+});
+
 // @route Post api/profile --HEADERINFO
 // @desc Create or Edit User Profile --HEADERINFO
 // @access Private  --HEADERINFO
