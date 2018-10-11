@@ -19,9 +19,6 @@ module.exports = function validateExperienceInput(data) {
   if (Validator.isEmpty(data.from)) {
     errors.from = "From date field is required";
   }
-
-  ///// 7:12 video 022!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
   return {
     errors,
     isValid: isEmpty(errors)
