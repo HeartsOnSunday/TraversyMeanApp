@@ -98,6 +98,32 @@ router.delete(
   }
 );
 
+// @route POST Like api/posts/like/:id
+// @desc DELETE posts by id number
+// @access PRIVATE
+router.post(
+  "/like/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findOne({ user: req.user.id }).then(profile => {
+      Post.findById(req.params.id)
+        .then(post => {
+          // verify post owner
+          if (
+            post.likes.filter(like.user.toString() !== req.user.id).length > 0
+          ) {
+            return res
+              .status(400)
+              .json({ alreadyliked: "User already liked this post" });
+          }
+          post.likes.unshift({ user: req.user.id });
+          post.save().then(post => res.json(post));
+        })
+        .catch((err = res.status(400).json({ postnotfound: "No post found" })));
+    });
+  }
+);
+
 module.exports = router;
 
 //routes/api/users is implied by the route
