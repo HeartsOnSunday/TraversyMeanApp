@@ -99,7 +99,7 @@ router.delete(
 );
 
 // @route POST Like api/posts/like/:id
-// @desc DELETE posts by id number
+// @desc Like Post
 // @access PRIVATE
 router.post(
   "/like/:id",
@@ -110,12 +110,14 @@ router.post(
         .then(post => {
           // verify post owner
           if (
-            post.likes.filter(like.user.toString() !== req.user.id).length > 0
+            post.likes.filter(like => like.user.toString() !== req.user.id)
+              .length > 0
           ) {
             return res
               .status(400)
               .json({ alreadyliked: "User already liked this post" });
           }
+          // Add user id to likes array w/ unshift
           post.likes.unshift({ user: req.user.id });
           post.save().then(post => res.json(post));
         })
@@ -123,6 +125,36 @@ router.post(
     });
   }
 );
+
+// @route POST Like api/posts/unlike/:id
+// @desc Unlike post
+// @access PRIVATE
+router.post(
+  "/unlike/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findOne({ user: req.user.id }).then(profile => {
+      Post.findById(req.params.id)
+        .then(post => {
+          // verify post owner
+          if (
+            post.likes.filter(like.user.toString() !== req.user.id).length === 0
+          ) {
+            return res
+              .status(400)
+              .json({ notliked: "User has not liked this post" });
+          }
+          //get remove index by id
+          const removeIndex = post.likes
+            .map(item => item.user.toString())
+            .indexOf(req.user.id);
+          post.save().then(post => res.json(post));
+        })
+        .catch((err = res.status(400).json({ postnotfound: "No post found" })));
+    });
+  }
+);
+module.exports;
 
 module.exports = router;
 
