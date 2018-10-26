@@ -127,7 +127,7 @@ router.post(
   }
 );
 
-// @route POST Like api/posts/unlike/:id
+// @route POST Unlike api/posts/unlike/:id
 // @desc Unlike post
 // @access PRIVATE
 router.post(
@@ -144,7 +144,7 @@ router.post(
           ) {
             return res
               .status(400)
-              .json({ notliked: "User has not liked this post" });
+              .json({ notliked: "User has not liked this post yet" });
           }
           //get remove index by id
           const removeIndex = post.likes
@@ -157,11 +157,10 @@ router.post(
           // Save
           post.save().then(post => res.json(post));
         })
-        .catch((err = res.status(404).json({ postnotfound: "No post found" })));
+        .catch(err => res.status(404).json({ postnotfound: "No post found" }));
     });
   }
 );
-module.exports;
 
 module.exports = router;
 
