@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/leahgrace/Downloads/Mern Stack 2/06 Getting Started With React  The Frontend/devconnector_theme"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "devconnector_theme"
+	}
+}
